@@ -1,3 +1,4 @@
+import requests
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from pydantic import BaseModel
@@ -10,6 +11,7 @@ load_dotenv()
 
 app = FastAPI()
 
+# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -36,12 +38,26 @@ class EmergencyRequest(BaseModel):
     poliza: str
     motivo: str
 
+
 # ROOT
 @app.get("/")
 def root():
     return {
         "message": "Emergency AI Agent Running"
     }
+
+
+# HISTORIAL
+@app.get("/cases")
+def get_cases():
+
+    response = supabase.table("emergency_cases") \
+        .select("*") \
+        .order("id", desc=True) \
+        .execute()
+
+    return response.data
+
 
 # WEBHOOK PRINCIPAL
 @app.post("/emergency")
@@ -67,7 +83,10 @@ def analyze_emergency(data: EmergencyRequest):
         .eq("patient_cedula", data.cedula) \
         .execute()
 
-    preexisting = [c["condition"] for c in conditions.data]
+    preexisting = [
+        c["condition"]
+        for c in conditions.data
+    ]
 
     # PROMPT IA
     prompt = f"""
@@ -96,6 +115,17 @@ def analyze_emergency(data: EmergencyRequest):
     )
 
     ai_summary = response.choices[0].message.content
+
+    # ENVIAR ALERTA A N8N
+    requests.post(
+        "http://localhost:5678/webhook/alertas-emergencias",
+        json={
+            "patient": data.nombre,
+            "policy": data.poliza,
+            "status": policy_info["status"],
+            "summary": ai_summary
+        }
+    )
 
     # GUARDAR CASO
     supabase.table("emergency_cases").insert({

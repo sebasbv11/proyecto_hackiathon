@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
 
@@ -11,7 +11,34 @@ function App() {
 
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [cases, setCases] = useState([]);
+  const [showHistory, setShowHistory] = useState(false);
 
+  // Cargar historial
+  const fetchCases = async () => {
+
+    try {
+
+      const response = await fetch(
+        "http://127.0.0.1:8000/cases"
+      );
+
+      const data = await response.json();
+
+      setCases(data);
+
+    } catch (error) {
+      console.error(error);
+    }
+
+  };
+
+  // Ejecutar al iniciar
+  useEffect(() => {
+    fetchCases();
+  }, []);
+
+  // Inputs
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -19,7 +46,9 @@ function App() {
     });
   };
 
+  // Enviar formulario
   const handleSubmit = async (e) => {
+
     e.preventDefault();
 
     setLoading(true);
@@ -41,6 +70,9 @@ function App() {
 
       setResult(data);
 
+      // Actualizar historial
+      fetchCases();
+
     } catch (error) {
       console.error(error);
     }
@@ -61,7 +93,7 @@ function App() {
         textAlign: "center",
         marginBottom: "30px"
       }}>
-        🚑 Agente de IA de emergencia
+        🚑 Emergency AI Agent
       </h1>
 
       <form
@@ -107,11 +139,21 @@ function App() {
           Analizar Emergencia
         </button>
 
+        <button
+        type="button"
+        onClick={() => setShowHistory(!showHistory)}
+      >
+        📋 Historial
+      </button>
+
       </form>
 
       {
         loading &&
-        <p style={{ textAlign: "center" }}>
+        <p style={{
+          textAlign: "center",
+          marginTop: "20px"
+        }}>
           Analizando caso...
         </p>
       }
@@ -130,26 +172,22 @@ function App() {
             <h2>Resultado</h2>
 
             <p>
-              <strong>Póliza:</strong>
-              {" "}
+              <strong>Póliza:</strong>{" "}
               {result.policy_status}
             </p>
 
             <p>
-              <strong>Cobertura:</strong>
-              {" "}
+              <strong>Cobertura:</strong>{" "}
               {result.coverage}
             </p>
 
             <p>
-              <strong>Copago:</strong>
-              {" "}
+              <strong>Copago:</strong>{" "}
               ${result.copay}
             </p>
 
             <p>
-              <strong>Preexistencias:</strong>
-              {" "}
+              <strong>Preexistencias:</strong>{" "}
               {result.preexisting_conditions?.join(", ")}
             </p>
 
@@ -177,6 +215,64 @@ function App() {
 
         )
       }
+
+      {/* DASHBOARD */}
+
+      {
+  showHistory && (
+
+    <div style={{
+      maxWidth: "900px",
+      margin: "40px auto",
+      background: "#1e293b",
+      padding: "20px",
+      borderRadius: "10px"
+    }}>
+
+      <h2>📋 Historial Emergencias</h2>
+
+      <table
+        width="100%"
+        style={{
+          marginTop: "20px",
+          textAlign: "left"
+        }}
+      >
+
+        <thead>
+          <tr>
+            <th>Paciente</th>
+            <th>Póliza</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          {
+            cases.map((c, i) => (
+
+              <tr key={i}>
+
+                <td>{c.patient_name}</td>
+
+                <td>{c.policy_number}</td>
+
+                <td>{c.coverage_status}</td>
+
+              </tr>
+
+            ))
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  )
+}
 
     </div>
   );
