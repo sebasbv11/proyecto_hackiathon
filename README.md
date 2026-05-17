@@ -1,6 +1,6 @@
 # 🚑 Agente de IA para Emergencias Hospitalarias
 
-Sistema inteligente para gestión y análisis de emergencias hospitalarias utilizando IA, FastAPI, React, Supabase, OpenAI y automatizaciones con n8n + Discord.
+Sistema inteligente para gestión y análisis de emergencias hospitalarias utilizando IA, FastAPI, React, Supabase, OpenAI y notificaciones automáticas mediante Discord Webhooks.
 
 ---
 
@@ -8,7 +8,7 @@ Sistema inteligente para gestión y análisis de emergencias hospitalarias utili
 
 🔗 Sistema desplegado:
 
-[https://proyectohackiathon.vercel.app](https://proyectohackiathon.vercel.app)
+https://proyectohackiathon.vercel.app
 
 ---
 
@@ -16,7 +16,7 @@ Sistema inteligente para gestión y análisis de emergencias hospitalarias utili
 
 🔗 Discord:
 
-[https://discord.gg/65ypTrYr](https://discord.gg/65ypTrYr)
+https://discord.gg/65ypTrYr
 
 ---
 
@@ -24,28 +24,27 @@ Sistema inteligente para gestión y análisis de emergencias hospitalarias utili
 
 ## Frontend
 
-* React + Vite
-* JavaScript
-* Fetch API
-* CSS inline
+- React + Vite
+- JavaScript
+- Fetch API
+- CSS Inline
 
 ## Backend
 
-* FastAPI
-* Python
-* OpenAI API
-* Supabase
-* Requests
-* Uvicorn
+- FastAPI
+- Python
+- OpenAI API
+- Supabase
+- Requests
+- Uvicorn
 
 ## Base de Datos
 
-* Supabase PostgreSQL
+- Supabase PostgreSQL
 
-## Automatización
+## Notificaciones
 
-* n8n
-* Discord Webhooks
+- Discord Webhooks
 
 ---
 
@@ -54,64 +53,48 @@ Sistema inteligente para gestión y análisis de emergencias hospitalarias utili
 Modelo utilizado:
 
 ```bash
-GPT-4.1-mini
-```
+gpt-4.1-mini
 
 La IA analiza:
 
-* Motivo de emergencia
-* Cobertura médica
-* Preexistencias
-* Riesgo del paciente
-* Recomendaciones rápidas
-
----
-
-# 🏥 Lógica del Sistema de Pólizas
+Motivo de emergencia
+Cobertura médica
+Preexistencias
+Riesgo del paciente
+Recomendaciones rápidas
+🏥 Lógica del Sistema de Pólizas
 
 El sistema trabaja con 3 tipos principales de pólizas médicas:
 
-| Póliza  | Estado   | Cobertura         | Copago |
-| ------- | -------- | ----------------- | ------ |
-| VIP-001 | Activa   | Emergency Full    | $25    |
-| VIP-002 | Inactiva | Basic             | $50    |
-| VIP-003 | Activa   | Premium Emergency | $15    |
-
-## Funcionamiento
+Póliza	Estado	Cobertura	Copago
+VIP-001	Activa	Emergency Full	$25
+VIP-002	Inactiva	Basic	$50
+VIP-003	Activa	Premium Emergency	$15
+⚙️ Funcionamiento del Sistema
 
 Cuando un paciente ingresa:
 
-1. El sistema valida la póliza en Supabase.
-2. Verifica si la póliza está activa o inactiva.
-3. Consulta enfermedades preexistentes.
-4. La IA analiza el motivo de emergencia.
-5. Genera nivel de riesgo y recomendaciones.
-6. Guarda el caso en la base de datos.
-7. Envía una alerta automática a Discord mediante n8n.
-
-## Ejemplos
-
-### VIP-001
-
-* Cobertura completa de emergencias.
-* Riesgo alto recibe atención prioritaria.
-* Copago reducido.
-
-### VIP-002
-
-* Cobertura básica.
-* Mayor copago.
-* Puede requerir validación manual.
-
-### VIP-003
-
-* Cobertura premium.
-* Atención prioritaria.
-* Copago mínimo.
-
----
-
-# ⚙️ Funcionalidades
+El sistema valida la póliza en Supabase.
+Verifica si la póliza está activa o inactiva.
+Consulta enfermedades preexistentes.
+La IA analiza el motivo de emergencia.
+Genera nivel de riesgo y recomendaciones.
+Guarda el caso clínico en Supabase.
+Envía una alerta automática al canal de Discord.
+🏥 Ejemplos de Cobertura
+VIP-001
+Cobertura completa de emergencias
+Riesgo alto recibe atención prioritaria
+Copago reducido
+VIP-002
+Cobertura básica
+Mayor copago
+Puede requerir validación manual
+VIP-003
+Cobertura premium
+Atención prioritaria
+Copago mínimo
+⚙️ Funcionalidades
 
 ✅ Validación de pólizas
 
@@ -125,23 +108,26 @@ Cuando un paciente ingresa:
 
 ✅ Sistema desplegado en la nube
 
----
+✅ Integración con OpenAI GPT-4.1-mini
 
-# 🏥 Flujo del Sistema
+🏥 Flujo del Sistema
+El usuario ingresa datos del paciente.
+FastAPI recibe la emergencia.
+Se consulta Supabase.
+OpenAI genera el análisis clínico.
+Se guarda el caso en la base de datos.
+Discord recibe una alerta automática.
+🧱 Arquitectura
 
-1. El usuario ingresa datos del paciente.
-2. FastAPI recibe la emergencia.
-3. Se consulta Supabase.
-4. OpenAI genera el análisis.
-5. Se guarda el caso clínico.
-6. n8n envía alerta automática.
-7. Discord recibe la notificación.
+Frontend (Vercel)
+↓
+Backend FastAPI (Render)
+↓
+Supabase + OpenAI
+↓
+Discord Webhooks
 
----
-
-# 📦 Estructura del Proyecto
-
-```bash
+📦 Estructura del Proyecto
 proyecto_hackiathon/
 │
 ├── backend/
@@ -155,27 +141,13 @@ proyecto_hackiathon/
 │   └── package.json
 │
 └── README.md
-```
-
----
-
-# 🔐 Variables de Entorno
-
-## Backend (.env)
-
-```env
+🔐 Variables de Entorno
+Backend (.env)
 SUPABASE_URL=your_url
 SUPABASE_KEY=your_key
 OPENAI_API_KEY=your_openai_key
-```
-
----
-
-# ▶️ Ejecución Local
-
-## Backend
-
-```bash
+▶️ Ejecución Local
+Backend
 cd backend
 
 python -m venv venv
@@ -185,62 +157,32 @@ venv\Scripts\activate
 pip install -r requirements.txt
 
 uvicorn main:app --reload
-```
-
----
-
-## Frontend
-
-```bash
+Frontend
 cd frontend
 
 npm install
 
 npm run dev
-```
-
----
-
-# 🚀 Despliegue
-
-## Frontend
-
-* Vercel
-
-## Backend
-
-* Render
-
-## Base de Datos
-
-* Supabase
-
----
-
-# 📡 Endpoints API
-
-## Obtener historial
-
-```http
+🚀 Despliegue
+Frontend
+Vercel
+Backend
+Render
+Base de Datos
+Supabase
+Alertas
+Discord Webhooks
+📡 Endpoints API
+Obtener historial
 GET /cases
-```
-
-## Analizar emergencia
-
-```http
+Analizar emergencia
 POST /emergency
-```
 
 Ejemplo:
 
-```json
 {
   "nombre": "Carlos Mena",
   "cedula": "1723456789",
   "poliza": "VIP-001",
   "motivo": "Dolor torácico"
 }
-```
-
----
-
