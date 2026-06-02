@@ -32,8 +32,9 @@ client = OpenAI(
 )
 
 # WEBHOOK DISCORD
-DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1505324172568428624/E13NSM0eZFCbbGOZTzGriNkJkAcOuaaFgU3i7ydJWluU2PWVxK7TVb-qPPHdWA2K6XdC"
+import os
 
+discord_webhook_url = os.getenv("DISCORD_WEBHOOK_URL")
 # MODELO REQUEST
 class EmergencyRequest(BaseModel):
     nombre: str
