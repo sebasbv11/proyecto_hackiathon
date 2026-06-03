@@ -34,7 +34,7 @@ client = OpenAI(
 # WEBHOOK DISCORD
 import os
 
-discord_webhook_url = os.getenv("DISCORD_WEBHOOK_URL")
+DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")
 # MODELO REQUEST
 class EmergencyRequest(BaseModel):
     nombre: str
@@ -123,7 +123,7 @@ def analyze_emergency(data: EmergencyRequest):
     # ALERTA DISCORD
     try:
         requests.post(
-            DISCORD_WEBHOOK,
+            DISCORD_WEBHOOK_URL,
             json={
                 "content":
                 f"🚑 Nueva emergencia detectada\n\n"
