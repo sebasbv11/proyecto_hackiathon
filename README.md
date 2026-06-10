@@ -36,7 +36,6 @@ https://discord.gg/65ypTrYr
 - OpenAI API
 - Supabase
 - Requests
-- Uvicorn
 
 ## Base de Datos
 
